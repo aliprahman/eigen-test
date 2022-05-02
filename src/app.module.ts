@@ -2,7 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { BookModule } from './book/book.module';
-
+import { MemberModule } from './member/member.module';
+import { TransactionModule } from './transaction/transaction.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -30,6 +31,8 @@ import { AppService } from './app.service';
       inject: [ConfigService],
     }),
     BookModule,
+    MemberModule,
+    TransactionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
