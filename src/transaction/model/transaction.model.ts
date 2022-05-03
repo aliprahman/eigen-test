@@ -4,8 +4,10 @@ import {
   Table,
   BelongsTo,
   ForeignKey,
+  HasMany,
 } from 'sequelize-typescript';
 import { MemberModel } from '../../member/model/member.model';
+import { TransactionDetailModel } from './transaction-detail.model';
 
 @Table({
   tableName: 'transactions',
@@ -19,11 +21,14 @@ export class TransactionModel extends Model {
   member_id: string;
 
   @Column
-  loadDate: string;
+  loan_date: string;
 
   @Column
   total_book: number;
 
   @BelongsTo(() => MemberModel)
   member: MemberModel;
+
+  @HasMany(() => TransactionDetailModel)
+  transaction_details: TransactionDetailModel[];
 }

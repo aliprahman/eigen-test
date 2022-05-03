@@ -8,6 +8,6 @@ import { MemberService } from './service/member.service';
   imports: [SequelizeModule.forFeature([MemberModel])],
   providers: [MemberService],
   controllers: [MemberController],
-  exports: [SequelizeModule],
+  exports: [SequelizeModule, MemberService],
 })
 export class MemberModule {}

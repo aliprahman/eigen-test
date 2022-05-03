@@ -8,6 +8,6 @@ import { BookService } from './service/book.service';
   imports: [SequelizeModule.forFeature([BookModel])],
   providers: [BookService],
   controllers: [BookController],
-  exports: [SequelizeModule],
+  exports: [SequelizeModule, BookService],
 })
 export class BookModule {}

@@ -144,7 +144,7 @@ CREATE TABLE `transactions` (
   `id` int NOT NULL AUTO_INCREMENT,
   `code` varchar(25) NOT NULL,
   `member_id` int NOT NULL,
-  `load_date` date NOT NULL,
+  `loan_date` date NOT NULL,
   `total_book` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `transactions_code_uindex` (`code`),
