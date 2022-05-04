@@ -9,6 +9,7 @@ import { BookService } from '../../book/service/book.service';
 import { MemberService } from '../../member/service/member.service';
 import { TransactionService } from '../service/transaction.service';
 import { BorrowBookRequest } from '../request/borrow.request';
+import { ReturnBookRequest } from '../request/return.request';
 
 @Controller('transaction')
 export class TransactionController {
@@ -34,7 +35,7 @@ export class TransactionController {
         throw new NotFoundException('data book not found');
       }
       const isBorrowed = await this.transactionService.checkBookStatus(book.id);
-      if (isBorrowed) {
+      if (isBorrowed >= book.stock) {
         throw new BadRequestException('book is being borrowed by other member');
       }
       books.push(book.id);
@@ -54,6 +55,37 @@ export class TransactionController {
     const detailTrx = await this.transactionService.detailTransaction(trx.id);
     return {
       message: 'success borrow book',
+      data: detailTrx,
+    };
+  }
+
+  @Post('/return')
+  async returnBook(@Body() body: ReturnBookRequest) {
+    // check detail member
+    const member = await this.memberService.findByCode(body.member_code);
+    if (!member) {
+      throw new NotFoundException('data member not found');
+    }
+    // check detail book
+    const book = await this.bookService.findByCode(body.book_code);
+    if (!book) {
+      throw new NotFoundException('data book not found');
+    }
+    // check is book borrowed by that member
+    const isBorrowed = await this.transactionService.checkLoan(
+      member.id,
+      book.id,
+    );
+    if (!isBorrowed) {
+      throw new BadRequestException(
+        'book is not being borrowed by that member',
+      );
+    }
+    // return book
+    const trx = await this.transactionService.returnBook(member.id, book.id);
+    const detailTrx = await this.transactionService.detailTransaction(trx.id);
+    return {
+      message: 'success return book',
       data: detailTrx,
     };
   }
