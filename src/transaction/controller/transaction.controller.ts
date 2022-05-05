@@ -10,7 +10,8 @@ import { MemberService } from '../../member/service/member.service';
 import { TransactionService } from '../service/transaction.service';
 import { BorrowBookRequest } from '../request/borrow.request';
 import { ReturnBookRequest } from '../request/return.request';
-
+import { ApiTags, ApiOkResponse } from '@nestjs/swagger';
+@ApiTags('Transaction')
 @Controller('transaction')
 export class TransactionController {
   constructor(
@@ -19,6 +20,41 @@ export class TransactionController {
     private transactionService: TransactionService,
   ) {}
 
+  @ApiOkResponse({
+    schema: {
+      example: {
+        message: 'success borrow book',
+        data: {
+          id: 5,
+          code: 'L9YRW4',
+          member_id: 1,
+          loan_date: '2022-05-05',
+          total_book: 1,
+          transaction_details: [
+            {
+              id: 6,
+              book_id: 4,
+              return_date: null,
+              status: 'BORROWED',
+              transaction_id: 5,
+              book: {
+                id: 4,
+                code: 'HOB-83',
+                title: 'The Hobbit, or There and Back Again',
+                author: 'J.R.R. Tolkien',
+                stock: 0,
+              },
+            },
+          ],
+          member: {
+            id: 1,
+            code: 'M001',
+            name: 'Angga',
+          },
+        },
+      },
+    },
+  })
   @Post('/borrow')
   async borrowBook(@Body() body: BorrowBookRequest) {
     // check detail member
@@ -59,6 +95,41 @@ export class TransactionController {
     };
   }
 
+  @ApiOkResponse({
+    schema: {
+      example: {
+        message: 'success borrow book',
+        data: {
+          id: 5,
+          code: 'L9YRW4',
+          member_id: 1,
+          loan_date: '2022-05-05',
+          total_book: 1,
+          transaction_details: [
+            {
+              id: 6,
+              book_id: 4,
+              return_date: '2022-05-10',
+              status: 'RETURNED',
+              transaction_id: 5,
+              book: {
+                id: 4,
+                code: 'HOB-83',
+                title: 'The Hobbit, or There and Back Again',
+                author: 'J.R.R. Tolkien',
+                stock: 1,
+              },
+            },
+          ],
+          member: {
+            id: 1,
+            code: 'M001',
+            name: 'Angga',
+          },
+        },
+      },
+    },
+  })
   @Post('/return')
   async returnBook(@Body() body: ReturnBookRequest) {
     // check detail member
