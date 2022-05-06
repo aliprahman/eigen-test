@@ -29,7 +29,12 @@
 ## Installation
 
 ```bash
+clone repo to local folder and change directory to root folder project
+run command
 $ npm install
+create database in mysql
+dump file LIBRARY-2022_05_03_03_20_00-dump.sql in database folder to database
+create .env file, the content of env can copy and paste from .env.example
 ```
 
 ## Running the app
